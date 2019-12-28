@@ -39,6 +39,11 @@ namespace dlib
         // float get_avg_green() const { return avg_green; }
         // float get_avg_blue()  const { return avg_blue; }
 
+        void set_avg_color(std::array<float, array_depth> avg_color_)
+        {
+            for (uint64_t idx = 0; idx < array_depth; ++idx)
+                avg_color[idx] = avg_color_[idx];
+        }
         std::array<float, array_depth> get_avg_color() const { return avg_color; }
 
         unsigned long get_pyramid_padding() const { return pyramid_padding; }
@@ -179,30 +184,45 @@ namespace dlib
 
         friend void serialize(const input_array_image_pyramid& item, std::ostream& out)
         {
-            serialize("input_array_image_pyramid", out);
-            serialize(item.avg_color[0], out);
-            // serialize(item.avg_green, out);
-            // serialize(item.avg_blue, out);
+            uint32_t idx = 0; 
+            serialize("input_array_image_pyramid2", out);
+
+            for(idx=0; idx<array_depth; ++idx)
+                serialize(item.avg_color[idx], out);
+
             serialize(item.pyramid_padding, out);
             serialize(item.pyramid_outer_padding, out);
         }
 
         friend void deserialize(input_array_image_pyramid& item, std::istream& in)
         {
+            uint32_t idx = 0; 
             std::string version;
             deserialize(version, in);
-            if (version != "input_array_image_pyramid")
+            if (version != "input_array_image_pyramid" || version != "input_array_image_pyramid2")
                 throw serialization_error("Unexpected version found while deserializing dlib::input_array_image_pyramid.");
-            deserialize(item.avg_color[0], in);
-            // deserialize(item.avg_green, in);
-            // deserialize(item.avg_blue, in);
+            
+            if (version == "input_array_image_pyramid")
+            {
+                deserialize(item.avg_color[0], in);
+            }
+            else if (version == "input_array_image_pyramid2")
+            {
+                for (idx = 0; idx < array_depth; ++idx)
+                    deserialize(item.avg_color[idx], in);
+            }
+
             deserialize(item.pyramid_padding, in);
             deserialize(item.pyramid_outer_padding, in);
         }
 
         friend std::ostream& operator<<(std::ostream& out, const input_array_image_pyramid& item)
         {
-            out << "input_array_image_pyramid(" << item.avg_color[0] << ")";
+            uint32_t idx = 0; 
+            out << "input_array_image_pyramid(";
+            for (idx = 0; idx < array_depth; ++idx)
+                out << item.avg_color[idx] << " ";
+            out << ")";
             out << " array_depth=" << array_depth;
             out << " pyramid_padding=" << item.pyramid_padding;
             out << " pyramid_outer_padding=" << item.pyramid_outer_padding;
@@ -233,4 +253,3 @@ namespace dlib
 }   // end of namespce
 
 #endif // DLIB_DNN_INPUT_ARRAY_PYR_H_
-
