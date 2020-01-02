@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <sstream>
+#include <string>
 #include <array>
 #include <algorithm>
 
@@ -198,8 +199,9 @@ namespace dlib
         {
             uint32_t idx = 0; 
             std::string version;
-            deserialize(version, in);
-            if (version != "input_array_image_pyramid" || version != "input_array_image_pyramid2")
+            deserialize(version, in); 
+
+            if (((version.compare(0, 26, "input_array_image_pyramid") != 0) && (version.compare(0, 27, "input_array_image_pyramid2") != 0)))
                 throw serialization_error("Unexpected version found while deserializing dlib::input_array_image_pyramid.");
             
             if (version == "input_array_image_pyramid")
