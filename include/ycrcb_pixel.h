@@ -1,18 +1,15 @@
 #ifndef YCRCB_PIXEL_INCLUDE_
 #define YCRCB_PIXEL_INCLUDE_
 
-//#include <dlib/pixel.h>
 #include <iostream>
 #include <cmath>
 #include <limits>
 #include <complex>
 
-//#include "dlib/pixel.h"
 #include "dlib/serialize.h"
 #include "dlib/algs.h"
 #include "dlib/uintn.h"
 #include "dlib/enable_if.h"
-
 
 
 /*
@@ -83,7 +80,7 @@ namespace dlib
 
         template < typename P1, typename P2 >
         typename enable_if_c<pixel_traits<P1>::ycrcb && pixel_traits<P2>::ycrcb>::type
-            assign(P1& dest, const P2& src)
+        assign(P1& dest, const P2& src)
         {
             dest.y = src.y;
             dest.cr = src.cr;
@@ -94,7 +91,7 @@ namespace dlib
         // Grayscale to YCrCB
         template < typename P1, typename P2 >
         typename enable_if_c<pixel_traits<P1>::ycrcb && pixel_traits<P2>::grayscale>::type
-            assign(P1& dest, const P2& src)
+        assign(P1& dest, const P2& src)
         {
             unsigned char delta = 128;
 
