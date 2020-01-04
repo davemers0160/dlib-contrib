@@ -44,8 +44,7 @@ namespace dlib
                 This is a simple struct that represents an YCrCb colored graphical pixel.
         !*/
 
-        ycrcb_pixel (
-        ) {}
+        ycrcb_pixel() = default;
 
         ycrcb_pixel (
             unsigned char y_,
