@@ -222,12 +222,12 @@ namespace dlib
         {
             uint32_t idx = 0; 
             out << "input_array_image_pyramid(";
-            for (idx = 0; idx < array_depth; ++idx)
-                out << item.avg_color[idx] << " ";
-            out << ")";
-            out << " array_depth=" << array_depth;
-            out << " pyramid_padding=" << item.pyramid_padding;
-            out << " pyramid_outer_padding=" << item.pyramid_outer_padding;
+            for (idx = 0; idx < array_depth-1; ++idx)
+                out << item.avg_color[idx] << ",";
+            out << item.avg_color[array_depth - 1] << ")";
+            out << ", array_depth=" << array_depth;
+            out << ", pyramid_padding=" << item.pyramid_padding;
+            out << ", pyramid_outer_padding=" << item.pyramid_outer_padding;
             return out;
         }
 
