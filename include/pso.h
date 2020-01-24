@@ -288,6 +288,7 @@ namespace dlib
             X[index] = X[index] + V[index];
             X[index].limit_check(particle_limits);
             X[index].set_number(index);
+            X[index].set_iteration(iteration);
             
         }   // end of update_particle
 
