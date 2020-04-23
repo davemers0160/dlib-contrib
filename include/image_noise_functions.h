@@ -135,7 +135,7 @@ void apply_gaussian_noise(
         {
             for (c = 0; c < img[idx].nc(); ++c)
             {
-                v = dlib::round(rnd.get_random_gaussian()*std);
+                v = (T)(rnd.get_random_gaussian()*std);
                 img[idx](r, c) = dlib::put_in_range(lower_limit, upper_limit, img[idx](r, c) + v);
             }
         }
