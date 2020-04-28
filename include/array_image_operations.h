@@ -5,14 +5,30 @@
 #include <cstdint>
 #include <vector>
 #include <algorithm>
+#include <array>
 
 #include "dlib/matrix.h"
 #include "dlib/pixel.h"
 #include "dlib/image_io.h"
+#include "dlib/rand.h"
 
+// ----------------------------------------------------------------------------
+template<typename image_type>
+void scale_intensity(image_type& img,
+    dlib::rand& rnd,
+    double lower_limit,
+    double upper_limit)
+{
+    uint32_t idx;
+    double v = std::min(rnd.get_double_in_range(lower_limit, upper_limit + std::numeric_limits<double>::epsilon()), upper_limit);
+
+    for (idx = 0; idx < img.size(); ++idx)
+    {
+        img[idx] = dlib::matrix_cast<uint16_t>(dlib::matrix_cast<double>(img[idx]) * v);
+    }
+}   // end of scale_intensity 
 
 // ----------------------------------------------------------------------------------------
-
 template<typename array_type>
 void merge_channels(array_type &a_img, dlib::matrix<dlib::rgb_pixel> &img, uint64_t index=0)
 {
@@ -39,7 +55,6 @@ void merge_channels(array_type &a_img, dlib::matrix<dlib::rgb_pixel> &img, uint6
 }   // end of merge_channels
 
 // ----------------------------------------------------------------------------------------
-
 template<typename array_type>
 void split_channels(array_type &img_a, dlib::matrix<dlib::rgb_pixel> &img, uint64_t index=0)
 {
