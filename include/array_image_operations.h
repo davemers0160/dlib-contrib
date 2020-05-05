@@ -20,7 +20,9 @@ void scale_intensity(image_type& img,
     double upper_limit)
 {
     uint32_t idx;
-    double v = std::min(rnd.get_double_in_range(lower_limit, upper_limit + std::numeric_limits<double>::epsilon()), upper_limit);
+    uint32_t intensity = (uint32_t)rnd.get_integer_in_range((uint32_t)(lower_limit *10), (uint32_t)(upper_limit*10)+1);
+    //double v = std::min(rnd.get_double_in_range(lower_limit, upper_limit + std::numeric_limits<double>::epsilon()), upper_limit);
+    double v = (double)intensity / 10.0;
 
     for (idx = 0; idx < img.size(); ++idx)
     {
