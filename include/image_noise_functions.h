@@ -77,7 +77,7 @@ void apply_poisson_noise(
             for (c = 0; c < img[idx].nc(); ++c)
             {
                 n = (double)get_random_poisson(k, rnd) - k;
-                img[idx](r, c) = (uint16_t)std::max(std::min((double)img[idx](r, c) + n, upper_limit), lower_limit);
+                img[idx](r, c) = (T)(std::max(std::min((double)img[idx](r, c) + n, (double)upper_limit), (double)lower_limit));
             }
         }
     }
