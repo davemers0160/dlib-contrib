@@ -22,6 +22,8 @@ void prune_detects(
     {
         for (jdx = dets.size()-1; jdx > idx; --jdx)
         {
+            if(dets[idx].label == dets[jdx].label)
+            {
                 double inner = dets[idx].rect.intersect(dets[jdx].rect).area();
                 //if (inner == 0)
                 //        break;
@@ -37,6 +39,7 @@ void prune_detects(
                         dets[idx].rect.set_bottom(std::max(dets[idx].rect.bottom(), dets[jdx].rect.bottom()));
                         dets.erase(dets.begin()+jdx);
                 }
+            }
         }
     }
 
