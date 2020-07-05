@@ -85,7 +85,41 @@ void apply_poisson_noise(
 }   // end of apply_poisson_noise
 
 //-----------------------------------------------------------------------------
+template<typename T, typename pixel_type>
+void apply_rgb_poisson_noise(
+    dlib::matrix<pixel_type>& img,
+    double k,
+    dlib::rand& rnd,
+    T lower_limit,
+    T upper_limit
+)
+{
+    uint32_t idx;
+    long r, c;
+    double n1, n2, n3;
 
+    pixel_type p;
+
+    for (r = 0; r < img.nr(); ++r)
+    {
+        for (c = 0; c < img.nc(); ++c)
+        {
+            dlib::assign_pixel(p, img(r, c));
+            n1 = (double)p.red + (double)get_random_poisson(k, rnd) - k;
+            n2 = (double)p.blue + (double)get_random_poisson(k, rnd) - k;
+            n3 = (double)p.green + (double)get_random_poisson(k, rnd) - k;
+
+            p.red = (T)(std::max(std::min(n1, (double)upper_limit), (double)lower_limit));
+            p.blue = (T)(std::max(std::min(n2, (double)upper_limit), (double)lower_limit));
+            p.green = (T)(std::max(std::min(n3, (double)upper_limit), (double)lower_limit));
+
+            dlib::assign_pixel(img(r, c), p);
+        }
+    }
+
+}   // end of apply_poisson_noise
+
+//-----------------------------------------------------------------------------
 template<typename T, typename image_type>
 void apply_uniform_noise(
     image_type& img,

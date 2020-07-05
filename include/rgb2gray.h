@@ -7,13 +7,13 @@
 namespace dlib
 {
     template <typename color_pixel, typename gray_pixel>
-    void c2g(color_pixel p, gray_pixel &g)
+    void c2g(color_pixel &p, gray_pixel &g)
     {
-        g = 0.299*p.red + 0.587*p.green + 0.114*p.blue;
+        g = (gray_pixel)(0.299*(double)p.red + 0.587*(double)p.green + 0.114*(double)p.blue);
     }   // end c2g
 
-    template <typename image_type1, typename image_type2>
-    void rgb2gray(image_type1 color_img, image_type2 &gray_img)
+    template <typename gray_pixel>
+    void rgb2gray(dlib::matrix<dlib::rgb_pixel> color_img, dlib::matrix<gray_pixel> &gray_img)
     {
         gray_img.set_size(color_img.nr(), color_img.nc());
 
@@ -26,8 +26,8 @@ namespace dlib
         }
     }   // end of rgb2gray
 
-    template <typename image_type1, typename image_type2>
-    void bgr2gray(image_type1 color_img, image_type2 &gray_img)
+    template <typename gray_pixel>
+    void bgr2gray(dlib::matrix<dlib::bgr_pixel> color_img, dlib::matrix<gray_pixel> &gray_img)
     {
         gray_img.set_size(color_img.nr(), color_img.nc());
 
