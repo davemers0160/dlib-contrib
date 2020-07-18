@@ -94,26 +94,46 @@ void apply_poisson_noise(
     T upper_limit
 )
 {
-    uint32_t idx;
     long r, c;
     double n1, n2, n3;
 
-    pixel_type p;
 
-    for (r = 0; r < img.nr(); ++r)
+    if ((dlib::pixel_traits<pixel_type>::grayscale == true))
     {
-        for (c = 0; c < img.nc(); ++c)
+        T p;
+
+        for (r = 0; r < img.nr(); ++r)
         {
-            dlib::assign_pixel(p, img(r, c));
-            n1 = (double)p.red + (double)get_random_poisson(k, rnd) - k;
-            n2 = (double)p.blue + (double)get_random_poisson(k, rnd) - k;
-            n3 = (double)p.green + (double)get_random_poisson(k, rnd) - k;
+            for (c = 0; c < img.nc(); ++c)
+            {
+                dlib::assign_pixel(p, img(r, c));
 
-            p.red = (T)(std::max(std::min(n1, (double)upper_limit), (double)lower_limit));
-            p.blue = (T)(std::max(std::min(n2, (double)upper_limit), (double)lower_limit));
-            p.green = (T)(std::max(std::min(n3, (double)upper_limit), (double)lower_limit));
+                n1 = (double)(p) + (double)get_random_poisson(k, rnd) - k;
+                p = static_cast<T>(std::max(std::min(n1, (double)upper_limit), (double)lower_limit));
 
-            dlib::assign_pixel(img(r, c), p);
+                dlib::assign_pixel(img(r, c), p);
+            }
+        }
+    }
+    else if ((dlib::pixel_traits<pixel_type>::rgb == true) && (dlib::pixel_traits<pixel_type>::has_alpha == false))
+    {
+        pixel_type p;
+
+        for (r = 0; r < img.nr(); ++r)
+        {
+            for (c = 0; c < img.nc(); ++c)
+            {
+                dlib::assign_pixel(p, img(r, c));
+                n1 = (double)p.red + (double)get_random_poisson(k, rnd) - k;
+                n2 = (double)p.blue + (double)get_random_poisson(k, rnd) - k;
+                n3 = (double)p.green + (double)get_random_poisson(k, rnd) - k;
+
+                p.red = (T)(std::max(std::min(n1, (double)upper_limit), (double)lower_limit));
+                p.blue = (T)(std::max(std::min(n2, (double)upper_limit), (double)lower_limit));
+                p.green = (T)(std::max(std::min(n3, (double)upper_limit), (double)lower_limit));
+
+                dlib::assign_pixel(img(r, c), p);
+            }
         }
     }
 
