@@ -57,9 +57,9 @@ uint32_t get_random_poisson(double k, dlib::rand& rnd)
 //}
 
 //-----------------------------------------------------------------------------
-template<typename T, typename array_type>
+template<typename T, int array_depth>
 void apply_poisson_noise(
-    array_type &img,
+    std::array<dlib::matrix<T>, array_depth> &img,
     double k, 
     dlib::rand& rnd,
     T lower_limit,
@@ -70,7 +70,7 @@ void apply_poisson_noise(
     long r, c;
     double n;
 
-    for (idx = 0; idx < img.size(); ++idx)
+    for (idx = 0; idx < array_depth; ++idx)
     {
         for (r = 0; r < img[idx].nr(); ++r)
         {
@@ -86,7 +86,7 @@ void apply_poisson_noise(
 
 //-----------------------------------------------------------------------------
 template<typename T, typename pixel_type>
-void apply_rgb_poisson_noise(
+void apply_poisson_noise(
     dlib::matrix<pixel_type>& img,
     double k,
     dlib::rand& rnd,
