@@ -87,7 +87,7 @@ void apply_poisson_noise(
 }   // end of apply_poisson_noise
 
 //-----------------------------------------------------------------------------
-template<typename T, uint32_t array_depth>
+template<typename T, long unsigned int array_depth>
 void apply_poisson_noise(
     std::array<dlib::matrix<T>, array_depth>& img,
     double k,
