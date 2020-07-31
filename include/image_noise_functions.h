@@ -62,8 +62,8 @@ void apply_poisson_noise(
     std::array<dlib::matrix<T>, array_depth> &img,
     double k, 
     dlib::rand& rnd,
-    T lower_limit,
-    T upper_limit 
+    double lower_limit,
+    double upper_limit 
 )
 {
     uint32_t idx;
@@ -77,7 +77,7 @@ void apply_poisson_noise(
             for (c = 0; c < img[idx].nc(); ++c)
             {
                 n = (double)get_random_poisson(k, rnd) - k;
-                img[idx](r, c) = (T)(std::max(std::min((double)img[idx](r, c) + n, (double)upper_limit), (double)lower_limit));
+                img[idx](r, c) = (T)(std::max(std::min((double)img[idx](r, c) + n, upper_limit), lower_limit));
             }
         }
     }
