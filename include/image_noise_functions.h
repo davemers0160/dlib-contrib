@@ -32,59 +32,6 @@ uint32_t get_random_poisson(double k, dlib::rand& rnd)
 
 
 //-----------------------------------------------------------------------------
-//template<typename image_type>
-//void add_poisson_noise(dlib::matrix<image_type> &src, dlib::matrix<image_type> &dst, double k, dlib::rand& rnd)
-//{
-//    uint32_t idx, r, c;
-//    double n;
-//
-//    DLIB_CASSERT(src.size() == dst.size());
-//
-//    for (idx = 0; idx < src.size(); ++idx)
-//    {
-//        dst[idx].set_size(src[idx].nr(), src[idx].nc());
-//
-//        for (r = 0; r < src[idx].nr(); ++r)
-//        {
-//            for (c = 0; c < src[idx].nc(); ++c)
-//            {
-//                n = (double)get_random_poisson(k, rnd) - k;
-//                dst[idx](r, c) = (uint16_t)dlib::max(dlib::min((double)src[idx](r, c) + n, 255.0), 0.0);
-//            }
-//        }
-//    }
-//
-//}
-
-//-----------------------------------------------------------------------------
-template<typename T, int array_depth>
-void apply_poisson_noise(
-    std::array<dlib::matrix<T>, array_depth> &img,
-    double k, 
-    dlib::rand& rnd,
-    double lower_limit,
-    double upper_limit 
-)
-{
-    uint32_t idx;
-    long r, c;
-    double n;
-
-    for (idx = 0; idx < array_depth; ++idx)
-    {
-        for (r = 0; r < img[idx].nr(); ++r)
-        {
-            for (c = 0; c < img[idx].nc(); ++c)
-            {
-                n = (double)get_random_poisson(k, rnd) - k;
-                img[idx](r, c) = (T)(std::max(std::min((double)img[idx](r, c) + n, upper_limit), lower_limit));
-            }
-        }
-    }
-
-}   // end of apply_poisson_noise
-
-//-----------------------------------------------------------------------------
 template<typename T, typename pixel_type>
 void apply_poisson_noise(
     dlib::matrix<pixel_type>& img,
@@ -133,6 +80,34 @@ void apply_poisson_noise(
                 p.green = (T)(std::max(std::min(n3, (double)upper_limit), (double)lower_limit));
 
                 dlib::assign_pixel(img(r, c), p);
+            }
+        }
+    }
+
+}   // end of apply_poisson_noise
+
+//-----------------------------------------------------------------------------
+template<typename T, int array_depth>
+void apply_poisson_noise(
+    std::array<dlib::matrix<T>, array_depth>& img,
+    double k,
+    dlib::rand& rnd,
+    double lower_limit,
+    double upper_limit
+)
+{
+    uint32_t idx;
+    long r, c;
+    double n;
+
+    for (idx = 0; idx < array_depth; ++idx)
+    {
+        for (r = 0; r < img[idx].nr(); ++r)
+        {
+            for (c = 0; c < img[idx].nc(); ++c)
+            {
+                n = (double)get_random_poisson(k, rnd) - k;
+                img[idx](r, c) = (T)(std::max(std::min((double)img[idx](r, c) + n, upper_limit), lower_limit));
             }
         }
     }
