@@ -8,7 +8,7 @@
 namespace dlib
 {
 
-    namespace cpnet
+    namespace impl
     {
         template <size_t begin, size_t end, size_t begin2>
         struct copy_layer_loop
@@ -19,7 +19,7 @@ namespace dlib
             static typename std::enable_if<!is_add_layer<F>::value>::type invoke_functor(F&& from, T&& to)
             {
                 // intentionally left empty
-                std::cout << "skipping: layer<" << begin << ">" << std::endl;
+                //std::cout << "skipping: layer<" << begin << ">" << std::endl;
             }
 
             // this version will operate on all layers in the "add_layer" class
@@ -28,7 +28,7 @@ namespace dlib
             static typename std::enable_if<is_add_layer<F>::value>::type invoke_functor(F&& from, T&& to)
             {
                 //std::cout << "copying: layer<" << begin << ">" << std::endl;
-                std::cout << "copying: layer<" << begin << "> -> layer<" << begin2 << ">" << std::endl;
+                //std::cout << "copying: layer<" << begin << "> -> layer<" << begin2 << ">" << std::endl;
                 to.layer_details() = from.layer_details();
             }
 
@@ -52,13 +52,13 @@ namespace dlib
             static typename std::enable_if<!is_add_layer<F>::value>::type invoke_functor(F&& from, T&& to)
             {
                 // intentionally left empty
-                std::cout << "skipping: layer<" << end << ">" << std::endl;
+                //std::cout << "skipping: layer<" << end << ">" << std::endl;
             }
 
             template <typename F, typename T>
             static typename std::enable_if<is_add_layer<F>::value>::type invoke_functor(F&& from, T&& to)
             {
-                std::cout << "copying: layer<" << end << "> -> layer<" << begin2 << ">" << std::endl;
+                //std::cout << "copying: layer<" << end << "> -> layer<" << begin2 << ">" << std::endl;
                 to.layer_details() = from.layer_details();
             }
 
@@ -70,11 +70,11 @@ namespace dlib
             )
             {
                 invoke_functor(layer<end>(from_net), layer<begin2>(to_net));
-                std::cout << "copying complete!" << std::endl;
+                //std::cout << "copying complete!" << std::endl;
             }
         };
 
-    }   // end of cpnet namespace
+    }   // end of impl namespace
 
 
     // This is the main funciton to call.  Supply it the the start and end (b1, e1) of the network you want to copy.
@@ -87,12 +87,10 @@ namespace dlib
         static_assert(e1 <= net_type1::num_layers, "Invalid range");
 
         // begin the layer copying process
-        cpnet::copy_layer_loop<b1, e1, b2>::visit(from_net, to_net);
+        impl::copy_layer_loop<b1, e1, b2>::visit(from_net, to_net);
     }
 
 }   // end of dlib namespace
-
-
 
 
 #endif  // end of COPY_DLIB_NET_H_
