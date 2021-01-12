@@ -164,6 +164,8 @@ namespace dlib
             sync_filename = filename;
         }
 
+        double get_gbest(void) { return g_best; }
+
         // ----------------------------------------------------------------------------------------
         void init(std::pair<T, T> p_lim, std::pair<T, T> v_lim)
         {
