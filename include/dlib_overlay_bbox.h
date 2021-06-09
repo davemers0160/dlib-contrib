@@ -1,5 +1,5 @@
-#ifndef OVERLAY_BBOX_H_
-#define OVERLAY_BBOX_H_
+#ifndef DLIB_OVERLAY_BBOX_H_
+#define DLIB_OVERLAY_BBOX_H_
 
 
 #include <opencv2/core/core.hpp>
@@ -66,4 +66,4 @@ void dlib_overlay_bbox(image_type& img, dlib::mmod_rect box_label, dlib::rgb_pix
 
 }
 
-#endif  // OVERLAY_BBOX_H_
+#endif  // DLIB_OVERLAY_BBOX_H_
