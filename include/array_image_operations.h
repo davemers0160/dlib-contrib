@@ -13,8 +13,8 @@
 #include "dlib/rand.h"
 
 // ----------------------------------------------------------------------------
-template<typename image_type>
-void scale_intensity(image_type& img,
+template<typename T, uint32_t img_depth>
+void scale_intensity(std::array<dlib::matrix<T>, img_depth>& img,
     dlib::rand& rnd,
     double lower_limit,
     double upper_limit)
@@ -26,7 +26,7 @@ void scale_intensity(image_type& img,
 
     for (idx = 0; idx < img.size(); ++idx)
     {
-        img[idx] = dlib::matrix_cast<uint16_t>(dlib::matrix_cast<double>(img[idx]) * v);
+        img[idx] = dlib::matrix_cast<T>(dlib::matrix_cast<double>(img[idx]) * v);
     }
 }   // end of scale_intensity 
 
