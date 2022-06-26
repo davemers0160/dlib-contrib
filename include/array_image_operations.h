@@ -13,7 +13,7 @@
 #include "dlib/rand.h"
 
 // ----------------------------------------------------------------------------
-template<typename T, uint32_t img_depth>
+template<typename T, size_t img_depth>
 void scale_intensity(std::array<dlib::matrix<T>, img_depth>& img,
     dlib::rand& rnd,
     double lower_limit,
